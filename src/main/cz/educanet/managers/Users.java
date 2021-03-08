@@ -1,29 +1,27 @@
 package cz.educanet.managers;
 
+
+import javax.persistence.Entity;
+
+@Entity
 public class Users {
-    private String fullname;
-    private String username;
-    private String email;
-    private String password;
 
-    public Users( String fullname, String username, String email,  String password){
-        this.fullname = fullname;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
+    public String jmeno, heslo;
+    public int id;
 
-    public String getUsername(){
-        return username;
-    }
-    public String getPassword(){
-        return password;
+    public String getJmeno() { return jmeno; }
+    public String getHeslo() { return heslo; }
+    public int getID() { return id; }
+
+    public String setUser(String jmeno) { return this.jmeno = jmeno; }
+    public String setHeslo(String heslo){ return this.heslo = heslo;}
+    public int setId(int id) { return this.id = id; }
+
+    public void setJmeno(String jmeno) {
+        this.jmeno = jmeno;
     }
 
-    public String changeUsername(String newUsername){
-        return this.username = newUsername;
-    }
-    public String changePassword(String newPassword){
-        return this.username = newPassword;
+    public int getId() {
+        return id;
     }
 }
