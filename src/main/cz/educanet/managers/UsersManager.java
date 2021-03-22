@@ -1,36 +1,46 @@
-package cz.educanet.javaeeapi;
+package cz.educanet.managers;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
 
 @ApplicationScoped
 public class UsersManager {
+    @Inject
+    private LoginManager loginManager;
+
     private ArrayList<User> userList = new ArrayList<>();
 
-    public ArrayList<User> dostanJmenos(){ return userList; }
+    public ArrayList<User> getUsers() {
+        return userList;
+    }
 
-    public boolean create(User user) {
+    public boolean createUser(User user) {
         user.setId(userList.size());
-        user.id++;
         return userList.add(user);
     }
 
-    public User dostanJmenos (int id){
+    public UserToken checkUser(User user) {
+        Optional<User> tempUser = userList.stream()
+                .filter(u -> u.getUsername().equals(user.getUsername()))
+                .findFirst();
+        if (tempUser.isPresent() && Objects.equals(tempUser.get().getPassword(), user.getPassword()))
+            return loginManager.createToken();
+        return null;
+    }
+
+    public User getUserById(int id) {
         return userList.stream()
-                .filter(userListStream -> id == userListStream.getID())
+                .filter(userListStream -> id == userListStream.getId())
                 .findAny()
                 .orElse(null);
     }
 
-    public boolean odstranJmenos(int id){
-        return  userList.remove(dostanJmenos(id));
+    public boolean deleteUserById(int id) {
+
+        return userList.remove(id) != null;
     }
-    public boolean kontrolac(int id) {
-        for (int i = 0; i < 100; i++){
-            if (id != userList.get(id).id) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 }
